@@ -1,0 +1,13 @@
+{
+  "name": "quartzeon-site",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev --port 8788",
+    "db:local": "wrangler d1 execute quartzeon --local --file=schema.sql",
+    "db:remote": "wrangler d1 execute quartzeon --remote --file=schema.sql",
+    "deploy": "wrangler pages deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.42.0"
+  }
+}

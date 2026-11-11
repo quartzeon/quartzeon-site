@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project · Quartz Eon</title>
+  <meta name="theme-color" content="#08081a">
+  <link rel="icon" href="/assets/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <svg class="sr-only" aria-hidden="true" focusable="false">
+    <filter id="lg-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="noise"/>
+      <feGaussianBlur in="noise" stdDeviation="2" result="soft"/>
+      <feDisplacementMap in="SourceGraphic" in2="soft" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <header class="nav-wrap">
+    <nav class="nav glass" aria-label="Main">
+      <a class="brand" href="/">
+        <img src="/assets/logo.png" alt="" width="32" height="32">
+        <span>Quartz Eon</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/#software">Software</a></li>
+        <li><a href="/#youtube">YouTube</a></li>
+      </ul>
+      <a class="pill pill-lime nav-cta" href="/#contact">Contact <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main class="page container" id="main">
+    <p class="label"><a href="/#projects">← All projects</a></p>
+    <h1 class="hero-title" id="p-title">Loading…</h1>
+    <p class="hero-sub" id="p-summary"></p>
+    <div class="tags" id="p-tags"></div>
+    <div class="page-cover" id="p-cover" hidden></div>
+    <div class="page-body" id="p-body"></div>
+    <p><a class="pill pill-lime" id="p-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Visit project <span aria-hidden="true">↗</span></a></p>
+  </main>
+
+  <footer class="footer container">
+    <div class="footer-row">
+      <span>Quartz Eon</span>
+      <a href="/">Home ↑</a>
+    </div>
+    <p class="wordmark" aria-hidden="true">QUARTZ EON</p>
+  </footer>
+
+  <script src="/js/glass.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/project.js"></script>
+</body>
+</html>

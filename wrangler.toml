@@ -1,0 +1,20 @@
+name = "quartzeon"
+compatibility_date = "2025-09-01"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "quartzeon"
+database_id = "a367c2ed-d0f7-4713-b071-4ac544cd168d"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "quartzeon-files"
+
+[vars]
+# Cloudflare Zero Trust team domain, e.g. "yourteam.cloudflareaccess.com"
+ACCESS_TEAM_DOMAIN = ""
+# "Application Audience (AUD) Tag" of the Access application that protects /admin
+ACCESS_AUD = ""
+# Comma-separated emails allowed into /admin
+ADMIN_EMAILS = ""

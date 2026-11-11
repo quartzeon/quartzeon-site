@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com; connect-src 'self' https://api.github.com https://noembed.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Admin · Quartz Eon</title>
+  <link rel="icon" href="/assets/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body class="admin">
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="admin-top container">
+    <a class="brand" href="/" target="_blank" rel="noopener">
+      <img src="/assets/logo.png" alt="" width="32" height="32">
+      <span>Quartz Eon <span class="muted">Admin</span></span>
+    </a>
+    <nav class="tabs glass" role="tablist" aria-label="Sections">
+      <button type="button" role="tab" data-tab="projects" aria-selected="true">Projects</button>
+      <button type="button" role="tab" data-tab="software" aria-selected="false">Software</button>
+      <button type="button" role="tab" data-tab="videos" aria-selected="false">Videos</button>
+      <button type="button" role="tab" data-tab="settings" aria-selected="false">Channel &amp; site</button>
+    </nav>
+    <button class="pill glass signout" type="button" id="signout" hidden>Sign out</button>
+  </header>
+
+  <main class="container admin-main">
+    <p class="toast" id="toast" role="status" hidden></p>
+
+    <!-- Sign in -->
+    <form class="panel glass signin" id="signin" hidden novalidate>
+      <h2>Sign in with GitHub</h2>
+      <p class="hint">Changes are saved to the <strong id="repo-name"></strong> repository on GitHub. Paste a token that can write to it.</p>
+      <label>GitHub token <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…"></label>
+      <ol class="hint steps">
+        <li>On GitHub: Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.</li>
+        <li>Repository access: Only select repositories → this site's repository.</li>
+        <li>Permissions → Repository permissions → Contents: Read and write.</li>
+        <li>Generate it, copy it and paste it here. It is kept only in this browser.</li>
+      </ol>
+      <div class="actions">
+        <button class="pill pill-lime" type="submit">Sign in</button>
+      </div>
+    </form>
+
+    <div id="workspace" hidden>
+    <!-- Projects -->
+    <section class="panel-wrap" data-panel="projects">
+      <form class="panel glass" data-section="projects" novalidate>
+        <h2 data-heading>Add a project</h2>
+        <label>Title <input name="title" maxlength="120" required></label>
+        <label>Short summary <input name="summary" maxlength="300"></label>
+        <label>Details <textarea name="body" rows="6" maxlength="20000" placeholder="Leave an empty line between paragraphs."></textarea></label>
+        <div class="row">
+          <label>Project link <input name="url" type="url" placeholder="https://"></label>
+          <label>Tags <input name="tags" maxlength="200" placeholder="Web, Java, Design"></label>
+        </div>
+        <div class="row">
+          <div class="file-field">
+            <label>Cover image (wide) <input name="cover" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+            <label class="remove" data-current="cover_key" hidden><input type="checkbox" name="remove_cover" value="1"> Remove current cover</label>
+          </div>
+          <div class="file-field">
+            <label>Carousel photo (tall) <input name="carousel" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+            <label class="remove" data-current="carousel_key" hidden><input type="checkbox" name="remove_carousel" value="1"> Remove current photo</label>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" name="in_carousel" value="1" checked> Show in the carousel</label>
+        <p class="hint">The carousel uses the tall photo. Without one it uses the cover image.</p>
+        <div class="actions">
+          <button class="pill pill-lime" type="submit" data-submit>Add project</button>
+          <button class="pill glass" type="button" data-cancel hidden>Cancel edit</button>
+          <span class="status" data-status></span>
+        </div>
+      </form>
+      <ul class="items" data-list="projects"></ul>
+    </section>
+
+    <!-- Software -->
+    <section class="panel-wrap" data-panel="software" hidden>
+      <form class="panel glass" data-section="software" novalidate>
+        <h2 data-heading>Add software</h2>
+        <label>Name <input name="name" maxlength="120" required></label>
+        <label>Description <textarea name="description" rows="3" maxlength="1000"></textarea></label>
+        <div class="row">
+          <label>Version <input name="version" maxlength="30" placeholder="1.0.0"></label>
+          <label>Platform <input name="platform" maxlength="60" placeholder="Windows"></label>
+        </div>
+        <div class="row">
+          <div class="file-field">
+            <label>File to download (max 50 MB) <input name="file" type="file"></label>
+            <label class="remove" data-current="file_key" hidden><input type="checkbox" name="remove_file" value="1"> Remove current file</label>
+          </div>
+          <label>Or a download link <input name="external_url" type="url" placeholder="https://github.com/…/releases/…"></label>
+        </div>
+        <div class="file-field">
+          <label>Icon <input name="icon" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+          <label class="remove" data-current="icon_key" hidden><input type="checkbox" name="remove_icon" value="1"> Remove current icon</label>
+        </div>
+        <p class="hint">Files bigger than 50 MB: upload them to GitHub Releases or Google Drive and paste the link.</p>
+        <div class="actions">
+          <button class="pill pill-lime" type="submit" data-submit>Add software</button>
+          <button class="pill glass" type="button" data-cancel hidden>Cancel edit</button>
+          <span class="status" data-status></span>
+        </div>
+      </form>
+      <ul class="items" data-list="software"></ul>
+    </section>
+
+    <!-- Videos -->
+    <section class="panel-wrap" data-panel="videos" hidden>
+      <form class="panel glass" data-section="videos" novalidate>
+        <h2 data-heading>Add a video</h2>
+        <label>YouTube link <input name="youtube" required placeholder="https://www.youtube.com/watch?v=…"></label>
+        <label>Title <input name="title" maxlength="200" placeholder="Leave empty to use the YouTube title"></label>
+        <label>Description <textarea name="description" rows="3" maxlength="1000"></textarea></label>
+        <div class="file-field">
+          <label>Carousel photo (tall, optional) <input name="carousel" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+          <label class="remove" data-current="carousel_key" hidden><input type="checkbox" name="remove_carousel" value="1"> Remove current photo</label>
+        </div>
+        <label class="check"><input type="checkbox" name="in_carousel" value="1" checked> Show in the carousel</label>
+        <p class="hint">Without a carousel photo the video's YouTube thumbnail is used.</p>
+        <div class="actions">
+          <button class="pill pill-lime" type="submit" data-submit>Add video</button>
+          <button class="pill glass" type="button" data-cancel hidden>Cancel edit</button>
+          <span class="status" data-status></span>
+        </div>
+      </form>
+      <ul class="items" data-list="videos"></ul>
+    </section>
+
+    <!-- Settings -->
+    <section class="panel-wrap" data-panel="settings" hidden>
+      <form class="panel glass" data-section="settings" novalidate>
+        <h2>YouTube channel</h2>
+        <div class="row">
+          <label>Channel name <input name="channel_name" maxlength="80"></label>
+          <label>Handle <input name="channel_handle" maxlength="60" placeholder="@yourchannel"></label>
+        </div>
+        <div class="row">
+          <label>Channel link <input name="channel_url" type="url" placeholder="https://www.youtube.com/@…"></label>
+          <label>Subscribers <input name="channel_subs" maxlength="20" placeholder="12500"></label>
+        </div>
+        <label>About the channel <textarea name="channel_desc" rows="3" maxlength="500"></textarea></label>
+        <div class="file-field">
+          <label>Channel picture <input name="channel_avatar" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+          <label class="remove" data-current="channel_avatar_key" hidden><input type="checkbox" name="remove_channel_avatar" value="1"> Remove current picture</label>
+        </div>
+
+        <h2>Home page text</h2>
+        <div class="row">
+          <label>Big title, line 1 <input name="hero_line1" maxlength="80" placeholder="Building software,"></label>
+          <label>Big title, line 2 (grey) <input name="hero_line2" maxlength="80" placeholder="projects &amp; videos."></label>
+        </div>
+        <label>Text under the title <textarea name="hero_sub" rows="2" maxlength="300"></textarea></label>
+        <label>About (white part) <textarea name="about_text" rows="2" maxlength="300"></textarea></label>
+        <label>About (grey part) <textarea name="about_muted" rows="2" maxlength="200"></textarea></label>
+
+        <h2>Contact</h2>
+        <label>Email <input name="contact_email" type="email" maxlength="120"></label>
+        <label>Links, one per line as "Label | link" <textarea name="contact_links" rows="4" maxlength="2000" placeholder="GitHub | https://github.com/you&#10;Instagram | https://instagram.com/you"></textarea></label>
+
+        <div class="actions">
+          <button class="pill pill-lime" type="submit" data-submit>Save</button>
+          <span class="status" data-status></span>
+        </div>
+      </form>
+    </section>
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/admin/config.js"></script>
+  <script src="/admin/github.js"></script>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

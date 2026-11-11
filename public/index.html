@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quartz Eon</title>
+  <meta name="description" content="Projects, software and videos from Quartz Eon.">
+  <meta name="theme-color" content="#08081a">
+  <link rel="icon" href="/assets/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- Liquid Glass refraction filter (used by Chromium browsers only) -->
+  <svg class="sr-only" aria-hidden="true" focusable="false">
+    <filter id="lg-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="noise"/>
+      <feGaussianBlur in="noise" stdDeviation="2" result="soft"/>
+      <feDisplacementMap in="SourceGraphic" in2="soft" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <header class="nav-wrap">
+    <nav class="nav glass" aria-label="Main">
+      <a class="brand" href="/">
+        <img src="/assets/logo.png" alt="" width="32" height="32">
+        <span>Quartz Eon</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#software">Software</a></li>
+        <li><a href="#youtube">YouTube</a></li>
+      </ul>
+      <a class="pill pill-lime nav-cta" href="#contact">Contact <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero container">
+      <p class="label">[ Quartz Eon ]</p>
+      <h1 class="hero-title">
+        <span id="hero-line1">Building software,</span>
+        <span class="muted" id="hero-line2">projects &amp; videos.</span>
+      </h1>
+      <div class="hero-foot">
+        <p class="hero-sub" id="hero-sub">A home for everything I make: tools you can download, projects I'm working on, and videos from my channel.</p>
+        <div class="hero-actions">
+          <a class="pill pill-lime" href="#software">Get the software <span aria-hidden="true">↗</span></a>
+          <a class="pill glass" href="#youtube">Watch videos <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured" aria-label="Featured work">
+      <div class="coverflow" id="coverflow" tabindex="0" aria-roledescription="carousel" aria-label="Featured projects and videos. Use the arrow keys or scroll to rotate.">
+        <div class="cf-stage" id="cf-stage"></div>
+        <a class="cf-caption glass" id="cf-caption" href="#" aria-live="polite">
+          <span class="cf-kind" id="cf-kind"></span>
+          <span class="cf-title" id="cf-title"></span>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <button class="cf-btn cf-prev glass" type="button" id="cf-prev" aria-label="Previous">←</button>
+        <button class="cf-btn cf-next glass" type="button" id="cf-next" aria-label="Next">→</button>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Software</span><b>✱</b><span>Projects</span><b>✱</b><span>YouTube</span><b>✱</b><span>Quartz Eon</span><b>✱</b>
+        <span>Software</span><b>✱</b><span>Projects</span><b>✱</b><span>YouTube</span><b>✱</b><span>Quartz Eon</span><b>✱</b>
+      </div>
+    </div>
+
+    <section class="section container" id="about">
+      <p class="label">[ 01 — About ]</p>
+      <h2 class="section-title" id="about-text">I build things on the internet and share how I make them. <span class="muted">Software, side projects and videos, all in one place.</span></h2>
+      <div class="stats">
+        <div class="stat glass"><strong id="stat-projects">0</strong><span>Projects</span></div>
+        <div class="stat glass"><strong id="stat-software">0</strong><span>Software</span></div>
+        <div class="stat glass"><strong id="stat-videos">0</strong><span>Videos</span></div>
+        <div class="stat glass"><strong id="stat-subs">—</strong><span>Subscribers</span></div>
+      </div>
+    </section>
+
+    <section class="section container" id="projects">
+      <div class="section-head">
+        <p class="label">[ 02 — Projects ]</p>
+        <h2 class="section-title">Things I'm <span class="muted">building.</span></h2>
+      </div>
+      <div class="project-grid" id="project-grid"></div>
+      <p class="empty" id="projects-empty" hidden>No projects yet.</p>
+    </section>
+
+    <section class="section container" id="software">
+      <div class="section-head">
+        <p class="label">[ 03 — Software ]</p>
+        <h2 class="section-title">Download <span class="muted">my tools.</span></h2>
+      </div>
+      <ul class="software-list" id="software-list"></ul>
+      <p class="empty" id="software-empty" hidden>No software yet.</p>
+    </section>
+
+    <section class="section container" id="youtube">
+      <div class="section-head">
+        <p class="label">[ 04 — YouTube ]</p>
+        <h2 class="section-title">On the <span class="muted">channel.</span></h2>
+      </div>
+      <div class="channel glass" id="channel" hidden>
+        <img class="channel-avatar" id="channel-avatar" alt="" width="88" height="88" hidden>
+        <div class="channel-info">
+          <h3 id="channel-name"></h3>
+          <p class="channel-handle" id="channel-handle"></p>
+          <p class="channel-desc" id="channel-desc"></p>
+        </div>
+        <a class="pill pill-lime" id="channel-link" href="#" target="_blank" rel="noopener noreferrer">Subscribe <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="video-grid" id="video-grid"></div>
+      <p class="empty" id="videos-empty" hidden>No videos yet.</p>
+    </section>
+
+    <section class="section container contact" id="contact">
+      <p class="label">[ 05 — Contact ]</p>
+      <h2 class="section-title">Let's talk. <span class="muted">Say hello.</span></h2>
+      <div class="contact-links" id="contact-links"></div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    <div class="footer-row">
+      <span>© <span id="year"></span> Quartz Eon</span>
+      <a href="#main">Back to top ↑</a>
+    </div>
+    <p class="wordmark" aria-hidden="true">QUARTZ EON</p>
+  </footer>
+
+  <script src="/js/glass.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/carousel.js"></script>
+  <script src="/js/site.js"></script>
+</body>
+</html>
