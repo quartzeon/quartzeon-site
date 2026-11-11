@@ -1,20 +1,27 @@
 // Minimal GitHub REST client for the admin page. Every save becomes one commit
 // on the site's branch; GitHub Pages then rebuilds the site from it.
 (function () {
-  function GitHub(config, token) {
-    this.base = (config.api || "https://api.github.com") + "/repos/" + encodeURIComponent(config.owner) + "/" + encodeURIComponent(config.repo);
+  // `token` is a GitHub token, or a function resolving a session token when
+  // `api` points at the Supabase function that talks to GitHub for us.
+  function GitHub(config, token, api, apikey) {
+    this.base = (api || "https://api.github.com") + "/repos/" + encodeURIComponent(config.owner) + "/" + encodeURIComponent(config.repo);
     this.branch = config.branch || "main";
     this.token = token;
+    this.apikey = apikey;
   }
 
   GitHub.prototype.request = function (method, path, body, accept) {
-    var headers = { Authorization: "Bearer " + this.token, Accept: accept || "application/vnd.github+json" };
-    if (body !== undefined) headers["Content-Type"] = "application/json";
-    return fetch(this.base + path, {
-      method: method,
-      headers: headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
-      cache: "no-store",
+    var self = this;
+    return Promise.resolve(typeof this.token === "function" ? this.token() : this.token).then(function (token) {
+      var headers = { Authorization: "Bearer " + token, Accept: accept || "application/vnd.github+json" };
+      if (self.apikey) headers.apikey = self.apikey;
+      if (body !== undefined) headers["Content-Type"] = "application/json";
+      return fetch(self.base + path, {
+        method: method,
+        headers: headers,
+        body: body === undefined ? undefined : JSON.stringify(body),
+        cache: "no-store",
+      });
     }).then(function (res) {
       if (res.ok) return accept && accept.indexOf("raw") >= 0 ? res.text() : res.json();
       return res.json().catch(function () { return {}; }).then(function (out) {

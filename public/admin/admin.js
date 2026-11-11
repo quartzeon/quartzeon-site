@@ -12,6 +12,8 @@
   var data = emptyData();
   var head = null;       // { commit, tree } the data was read from
   var gh = null;
+  // Google sign-in through Supabase when it's set up, otherwise a GitHub token.
+  var auth = window.QE_SUPABASE && QE_SUPABASE.url ? new QEAuth(QE_SUPABASE) : null;
   var busy = false;
   var previews = {};     // file key -> blob: URL for images uploaded in this visit
 
@@ -198,9 +200,10 @@
   // ---------- GitHub ----------
 
   function friendly(e) {
+    if (e.status === 409 || e.status === 422) return "The site changed somewhere else since this page loaded. Reload the page and try again.";
+    if (auth) return e.message; // the Supabase function explains its own errors
     if (e.status === 401) return "GitHub didn't accept the token. Sign out and sign in with a new one.";
     if (e.status === 403 || e.status === 404) return "The token can't reach the " + QE_GITHUB.repo + " repository, or it can only read. Check its permissions.";
-    if (e.status === 409 || e.status === 422) return "The site changed somewhere else since this page loaded. Reload the page and try again.";
     return e.message;
   }
 
@@ -518,12 +521,19 @@
   }
 
   function start(token) {
-    gh = new QEGitHub(QE_GITHUB, token);
+    gh = auth
+      ? new QEGitHub(QE_GITHUB, auth.token.bind(auth), auth.url + "/functions/v1/github", auth.key)
+      : new QEGitHub(QE_GITHUB, token, QE_GITHUB.api);
     return load().then(function () { signedIn(true); });
   }
 
+  document.getElementById("google").addEventListener("click", function () {
+    auth.signIn();
+  });
+
   document.getElementById("signin").addEventListener("submit", function (e) {
     e.preventDefault();
+    if (auth) return;
     var input = document.getElementById("token");
     var token = input.value.trim();
     if (!token) return toast("Paste your GitHub token first.", true);
@@ -537,20 +547,25 @@
 
   document.getElementById("signout").addEventListener("click", function () {
     try { localStorage.removeItem(TOKEN_KEY); } catch (e) { /* ignore */ }
-    location.reload();
+    (auth ? auth.signOut() : Promise.resolve()).then(function () { location.reload(); });
   });
 
   // ---------- start ----------
 
-  document.getElementById("repo-name").textContent = QE_GITHUB.owner + "/" + QE_GITHUB.repo;
+  document.querySelectorAll(".repo-name").forEach(function (n) { n.textContent = QE_GITHUB.owner + "/" + QE_GITHUB.repo; });
+  document.getElementById("signin-google").hidden = !auth;
+  document.getElementById("signin-token").hidden = !!auth;
 
   var saved = null;
   try { saved = localStorage.getItem("qe-admin-tab"); } catch (e) { /* ignore */ }
   if (saved && document.querySelector('[data-panel="' + saved + '"]')) showTab(saved);
 
-  var token = readToken();
+  var problem = auth ? auth.fromRedirect() : "";
+  if (problem) toast(problem, true);
+  var token = auth ? auth.signedIn() : readToken();
   if (token) {
     start(token).catch(function (e) {
+      if (auth && e.status === 401) auth.write(null);
       signedIn(false);
       toast(friendly(e), true);
     });

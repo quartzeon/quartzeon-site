@@ -4,3 +4,10 @@ window.QE_GITHUB = {
   repo: "quartzeon-site",
   branch: "main",
 };
+
+// Google sign-in through Supabase. Fill in the project URL and its
+// publishable (anon) key to use it; leave url empty to sign in with a GitHub token.
+window.QE_SUPABASE = {
+  url: "",
+  key: "",
+};

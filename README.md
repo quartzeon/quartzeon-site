@@ -22,6 +22,22 @@ The repository the admin page saves to is set in `public/admin/config.js`.
    - Repository access: only this repository.
    - Permissions → Contents: Read and write.
 
+## Google sign-in (Supabase)
+
+With Supabase set up, the admin page shows "Sign in with Google" instead of the token form. Only the Google account in the `ADMIN_EMAIL` secret can save. The GitHub token stays on Supabase and never reaches the browser; content still lives in this repository.
+
+1. Create a Supabase project.
+2. Google Cloud → APIs & Services → Credentials → Create OAuth client ID (Web application). Authorized redirect URI: `https://<project-ref>.supabase.co/auth/v1/callback`.
+3. Supabase → Authentication → Sign In / Providers → Google: turn it on and paste the client ID and secret.
+4. Supabase → Authentication → URL Configuration: Site URL and Redirect URLs `https://quartzeon.com/admin/`.
+5. Supabase → Edge Functions → create a function named `github` with the code from `supabase/functions/github/index.ts`. Turn "Verify JWT" off (the function checks the sign-in itself).
+6. Edge Functions → Secrets:
+   - `GITHUB_TOKEN`: the fine-grained token from step 5 above.
+   - `ADMIN_EMAIL`: the Google address allowed to edit.
+   - `GITHUB_REPO`: `quartzeon/quartzeon-site`
+   - `ALLOWED_ORIGIN`: `https://quartzeon.com`
+7. Put the project URL and its publishable (anon) key in `public/admin/config.js` (`QE_SUPABASE`). Both are public values. Leave `url` empty to go back to token sign-in.
+
 ## Run locally
 
 Any static file server works, e.g. `npx serve public`. The admin page needs a real token and talks to GitHub, so test admin changes carefully.

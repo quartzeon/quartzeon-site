@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com; connect-src 'self' https://api.github.com https://noembed.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com; connect-src 'self' https://api.github.com https://*.supabase.co https://noembed.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>Admin · Quartz Eon</title>
@@ -35,17 +35,26 @@
 
     <!-- Sign in -->
     <form class="panel glass signin" id="signin" hidden novalidate>
-      <h2>Sign in with GitHub</h2>
-      <p class="hint">Changes are saved to the <strong id="repo-name"></strong> repository on GitHub. Paste a token that can write to it.</p>
-      <label>GitHub token <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…"></label>
-      <ol class="hint steps">
-        <li>On GitHub: Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.</li>
-        <li>Repository access: Only select repositories → this site's repository.</li>
-        <li>Permissions → Repository permissions → Contents: Read and write.</li>
-        <li>Generate it, copy it and paste it here. It is kept only in this browser.</li>
-      </ol>
-      <div class="actions">
-        <button class="pill pill-lime" type="submit">Sign in</button>
+      <div id="signin-google" hidden>
+        <h2>Sign in</h2>
+        <p class="hint">Sign in with the Google account that runs this site. Changes are saved to the <strong class="repo-name"></strong> repository on GitHub.</p>
+        <div class="actions">
+          <button class="pill pill-lime" type="button" id="google">Sign in with Google</button>
+        </div>
+      </div>
+      <div id="signin-token" hidden>
+        <h2>Sign in with GitHub</h2>
+        <p class="hint">Changes are saved to the <strong class="repo-name"></strong> repository on GitHub. Paste a token that can write to it.</p>
+        <label>GitHub token <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…"></label>
+        <ol class="hint steps">
+          <li>On GitHub: Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.</li>
+          <li>Repository access: Only select repositories → this site's repository.</li>
+          <li>Permissions → Repository permissions → Contents: Read and write.</li>
+          <li>Generate it, copy it and paste it here. It is kept only in this browser.</li>
+        </ol>
+        <div class="actions">
+          <button class="pill pill-lime" type="submit">Sign in</button>
+        </div>
       </div>
     </form>
 
@@ -178,6 +187,7 @@
   <script src="/js/common.js"></script>
   <script src="/admin/config.js"></script>
   <script src="/admin/github.js"></script>
+  <script src="/admin/auth.js"></script>
   <script src="/admin/admin.js"></script>
 </body>
 </html>
