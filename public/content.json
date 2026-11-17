@@ -2,6 +2,19 @@
   "settings": {},
   "projects": [
     {
+      "id": 2,
+      "slug": "iconnix-vpn-manager",
+      "cover_key": "img/a0abcd3a-f33d-4607-8bd7-325b3a252f62.png",
+      "carousel_key": "img/dccfc73d-c91d-4a94-8aff-44ed60ec6733.png",
+      "created_at": "2026-11-17T12:57:33.846Z",
+      "title": "Iconnix-VPN-Manager",
+      "summary": "VPS Manager",
+      "body": "Iconnix-VPN-Manager-Setup-Xn-23",
+      "url": "",
+      "tags": "",
+      "in_carousel": 1
+    },
+    {
       "id": 1,
       "slug": "once-quartz",
       "cover_key": "img/18c735ec-9696-4fbf-a51b-8a0cfc1e9aab.png",
